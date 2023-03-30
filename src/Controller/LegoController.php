@@ -16,6 +16,8 @@ class LegoController extends AbstractController
     #[Route('/', name: 'app_lego_index', methods: ['GET'])]
     public function index(LegoRepository $legoRepository): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         return $this->render('lego/index.html.twig', [
             'legos' => $legoRepository->findAll(),
         ]);
