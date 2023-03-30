@@ -42,3 +42,8 @@ when@prod:
                     adapter: cache.app
                 doctrine.system_cache_pool:
                     adapter: cache.system
+
+parameters:
+    env(DATABASE_URL): 'mysql://root:@db:3306/lego_col'
+    database_user: root
+    database_password: saturn
