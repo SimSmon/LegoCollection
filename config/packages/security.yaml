@@ -38,7 +38,8 @@ security:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
         - { path: '^/lego', roles: [IS_AUTHENTICATED_FULLY, ROLE_ADMIN] }
-
+        # allow unauthenticated users to access the login form
+        - { path: ^/login, roles: PUBLIC_ACCESS }
 
 when@test:
     security:
