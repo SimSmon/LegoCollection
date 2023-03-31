@@ -14,6 +14,7 @@ class LegoType extends AbstractType
         $builder
             ->add('name')
             ->add('ref')
+            ->add('legoUserRelations')
         ;
     }
 
