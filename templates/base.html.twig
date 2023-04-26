@@ -12,6 +12,8 @@
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
+
+        <a class="btn btn-sm btn-danger" href="{{ path('app_logout') }}">Déconnexion</a>
     </head>
     <body>
         {% block body %}{% endblock %}

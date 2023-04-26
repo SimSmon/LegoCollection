@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Lego index{% endblock %}
+
+{% block body %}
+    <h1>Lego index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Ref</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for lego in legos %}
+            <tr>
+                <td>{{ lego.id }}</td>
+                <td>{{ lego.name }}</td>
+                <td>{{ lego.ref }}</td>
+                <td>
+                    <a href="{{ path('app_lego_show', {'id': lego.id}) }}">show</a>
+                    <a href="{{ path('app_lego_edit', {'id': lego.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_lego_new') }}">Create new</a>
+{% endblock %}
