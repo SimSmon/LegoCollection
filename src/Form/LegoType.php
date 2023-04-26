@@ -3,9 +3,11 @@
 namespace App\Form;
 
 use App\Entity\Lego;
+use App\Entity\LegoUserRelation;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 class LegoType extends AbstractType
 {
@@ -14,7 +16,11 @@ class LegoType extends AbstractType
         $builder
             ->add('name')
             ->add('ref')
-            ->add('legoUserRelations')
+            ->add('test', CheckboxType::class, [
+                'data' => $options['isChecked'],
+                'required' => false,
+                'mapped' => false,
+            ])
         ;
     }
 
@@ -22,6 +28,7 @@ class LegoType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Lego::class,
-        ]);
+            'isChecked' => false,
+        ]); 
     }
 }

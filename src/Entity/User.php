@@ -31,12 +31,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: LegoUserRelation::class)]
-    private Collection $legoUserRelations;
+    #[ORM\ManyToMany(targetEntity: Lego::class, mappedBy: 'user')]
+    private Collection $legos;
+
+    public function __toString()
+    {
+        return $this->usernames;
+    }
 
     public function __construct()
     {
-        $this->legoUserRelations = new ArrayCollection();
+        $this->legos = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -110,30 +115,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, LegoUserRelation>
+     * @return Collection<int, Lego>
      */
-    public function getLegoUserRelations(): Collection
+    public function getLegos(): Collection
     {
-        return $this->legoUserRelations;
+        return $this->legos;
     }
 
-    public function addLegoUserRelation(LegoUserRelation $legoUserRelation): self
+    public function addLego(Lego $lego): self
     {
-        if (!$this->legoUserRelations->contains($legoUserRelation)) {
-            $this->legoUserRelations->add($legoUserRelation);
-            $legoUserRelation->setUser($this);
+        if (!$this->legos->contains($lego)) {
+            $this->legos->add($lego);
+            $lego->addUser($this);
         }
 
         return $this;
     }
 
-    public function removeLegoUserRelation(LegoUserRelation $legoUserRelation): self
+    public function removeLego(Lego $lego): self
     {
-        if ($this->legoUserRelations->removeElement($legoUserRelation)) {
-            // set the owning side to null (unless already changed)
-            if ($legoUserRelation->getUser() === $this) {
-                $legoUserRelation->setUser(null);
-            }
+        if ($this->legos->removeElement($lego)) {
+            $lego->removeUser($this);
         }
 
         return $this;

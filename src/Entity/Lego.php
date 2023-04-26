@@ -21,12 +21,12 @@ class Lego
     #[ORM\Column]
     private ?int $ref = null;
 
-    #[ORM\OneToMany(mappedBy: 'lego', targetEntity: LegoUserRelation::class)]
-    private Collection $legoUserRelations;
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'legos')]
+    private Collection $user;
 
     public function __construct()
     {
-        $this->legoUserRelations = new ArrayCollection();
+        $this->user = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -59,31 +59,25 @@ class Lego
     }
 
     /**
-     * @return Collection<int, LegoUserRelation>
+     * @return Collection<int, User>
      */
-    public function getLegoUserRelations(): Collection
+    public function getUser(): Collection
     {
-        return $this->legoUserRelations;
+        return $this->user;
     }
 
-    public function addLegoUserRelation(LegoUserRelation $legoUserRelation): self
+    public function addUser(User $user): self
     {
-        if (!$this->legoUserRelations->contains($legoUserRelation)) {
-            $this->legoUserRelations->add($legoUserRelation);
-            $legoUserRelation->setLego($this);
+        if (!$this->user->contains($user)) {
+            $this->user->add($user);
         }
 
         return $this;
     }
 
-    public function removeLegoUserRelation(LegoUserRelation $legoUserRelation): self
+    public function removeUser(User $user): self
     {
-        if ($this->legoUserRelations->removeElement($legoUserRelation)) {
-            // set the owning side to null (unless already changed)
-            if ($legoUserRelation->getLego() === $this) {
-                $legoUserRelation->setLego(null);
-            }
-        }
+        $this->user->removeElement($user);
 
         return $this;
     }

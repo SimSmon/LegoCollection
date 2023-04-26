@@ -9,10 +9,22 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
+
 
 #[Route('/lego')]
 class LegoController extends AbstractController
 {
+
+    /**
+     * @var Security
+     */
+    private $security;
+    public function __construct(Security $security)
+    {
+       $this->security = $security;
+    }
+
     #[Route('/', name: 'app_lego_index', methods: ['GET'])]
     public function index(LegoRepository $legoRepository): Response
     {
@@ -31,6 +43,11 @@ class LegoController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            if($form["test"]->getData() == true){
+                $lego->addUser($this->security->getUser());
+            }
+
             $legoRepository->save($lego, true);
 
             return $this->redirectToRoute('app_lego_index', [], Response::HTTP_SEE_OTHER);
@@ -53,10 +70,26 @@ class LegoController extends AbstractController
     #[Route('/{id}/edit', name: 'app_lego_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Lego $lego, LegoRepository $legoRepository): Response
     {
-        $form = $this->createForm(LegoType::class, $lego);
+        $user = $this->security->getUser();
+
+        $val = false;
+        if(in_array($user, $lego->getUser()->toArray()))
+        {
+            $val = true;
+        }
+        
+        
+        $form = $this->createForm(LegoType::class, $lego, ['isChecked' => $val]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            
+            if($form["test"]->getData() == true){
+                $lego->addUser($user);
+            } else {
+                $lego->removeUser($user);
+            }
+
             $legoRepository->save($lego, true);
 
             return $this->redirectToRoute('app_lego_index', [], Response::HTTP_SEE_OTHER);
