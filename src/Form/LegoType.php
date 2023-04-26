@@ -16,6 +16,9 @@ class LegoType extends AbstractType
         $builder
             ->add('name')
             ->add('ref')
+            ->add('year')
+            ->add('num_parts')
+            ->add('theme')
             ->add('test', CheckboxType::class, [
                 'data' => $options['isChecked'],
                 'required' => false,

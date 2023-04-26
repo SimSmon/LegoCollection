@@ -18,11 +18,23 @@ class Lego
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column]
-    private ?int $ref = null;
+    #[ORM\Column(length: 255)]
+    private ?string $ref = null;
 
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'legos')]
     private Collection $user;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $year = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $num_parts = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $imageURL = null;
+
+    #[ORM\ManyToOne(inversedBy: 'legos')]
+    private ?LegoTheme $theme = null;
 
     public function __construct()
     {
@@ -46,12 +58,12 @@ class Lego
         return $this;
     }
 
-    public function getRef(): ?int
+    public function getRef(): ?string
     {
         return $this->ref;
     }
 
-    public function setRef(int $ref): self
+    public function setRef(string $ref): self
     {
         $this->ref = $ref;
 
@@ -78,6 +90,54 @@ class Lego
     public function removeUser(User $user): self
     {
         $this->user->removeElement($user);
+
+        return $this;
+    }
+
+    public function getYear(): ?int
+    {
+        return $this->year;
+    }
+
+    public function setYear(?int $year): self
+    {
+        $this->year = $year;
+
+        return $this;
+    }
+
+    public function getNumParts(): ?int
+    {
+        return $this->num_parts;
+    }
+
+    public function setNumParts(?int $num_parts): self
+    {
+        $this->num_parts = $num_parts;
+
+        return $this;
+    }
+
+    public function getImageURL(): ?string
+    {
+        return $this->imageURL;
+    }
+
+    public function setImageURL(?string $imageURL): self
+    {
+        $this->imageURL = $imageURL;
+
+        return $this;
+    }
+
+    public function getTheme(): ?LegoTheme
+    {
+        return $this->theme;
+    }
+
+    public function setTheme(?LegoTheme $theme): self
+    {
+        $this->theme = $theme;
 
         return $this;
     }

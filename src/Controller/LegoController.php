@@ -30,6 +30,7 @@ class LegoController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
+        
         return $this->render('lego/index.html.twig', [
             'legos' => $legoRepository->findAll(),
         ]);

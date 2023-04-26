@@ -11,6 +11,7 @@
                 <th>Id</th>
                 <th>Name</th>
                 <th>Ref</th>
+                <th>thème</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -20,6 +21,7 @@
                 <td>{{ lego.id }}</td>
                 <td>{{ lego.name }}</td>
                 <td>{{ lego.ref }}</td>
+                <td>{{ lego.theme.name }}</td>
                 <td>
                     <a href="{{ path('app_lego_show', {'id': lego.id}) }}">show</a>
                     <a href="{{ path('app_lego_edit', {'id': lego.id}) }}">edit</a>
