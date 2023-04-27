@@ -4,13 +4,15 @@ namespace App\Controller;
 
 use App\Entity\Lego;
 use App\Form\LegoType;
+use App\Form\SearchType;
+use App\Model\SearchData;
 use App\Repository\LegoRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
-
 
 #[Route('/lego')]
 class LegoController extends AbstractController
@@ -25,14 +27,39 @@ class LegoController extends AbstractController
        $this->security = $security;
     }
 
-    #[Route('/', name: 'app_lego_index', methods: ['GET'])]
-    public function index(LegoRepository $legoRepository): Response
-    {
+    #[Route('/', name: 'app_lego_index', methods: ['POST','GET'])]
+    public function index(LegoRepository $legoRepository, PaginatorInterface $paginator, Request $request): Response
+    {        
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        
+        $searchData = new SearchData();
+
+        $form = $this->createForm(SearchType::class, $searchData, ['dataseach' => $searchData->searchField]);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+
+
+            $searchData->page = $request->query->getInt('page', 1);
+            $legos = $legoRepository->findBySearch($searchData, $request->query->getInt('page', 1));
+
+            return $this->render('lego/index.html.twig', [
+                'form' => $form->createView(),
+                'legos' => $paginator->paginate(
+                    $legos,
+                    $request->query->getInt('page', 1),
+                    20
+                ),
+            ]);
+        }
+
         return $this->render('lego/index.html.twig', [
-            'legos' => $legoRepository->findAll(),
+            'form' => $form->createView(),
+            'legos' => $paginator->paginate(
+                $legoRepository->findAll(),
+                $request->query->getInt('page', 1),
+                20
+            ),
         ]);
     }
 

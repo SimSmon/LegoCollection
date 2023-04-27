@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Lego;
+use App\Model\SearchData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -37,6 +38,26 @@ class LegoRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function findBySearch(SearchData $searchData)
+    {
+        $data = $this->createQueryBuilder('l');
+            
+        if(!empty($searchData->searchField))
+        {
+            $data = $data
+                ->where('l.name LIKE :searchField')
+                ->orWhere('l.ref LIKE :searchField')
+                ->setParameter('searchField', '%' . $searchData->searchField . '%')  
+                ;
+            }
+
+            return $data
+                ->getQuery()
+                ->getResult()
+                ;
+
     }
 
 //    /**

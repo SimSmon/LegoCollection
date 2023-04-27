@@ -5,6 +5,10 @@
 {% block body %}
     <h1>Lego index</h1>
 
+    {% include("components/_search_data.html.twig") with { 
+        form : form
+    } only %}
+
     <table class="table">
         <thead>
             <tr>
@@ -34,6 +38,10 @@
         {% endfor %}
         </tbody>
     </table>
+
+    <div class="navigation flex justify-center mb-8">
+        {{ knp_pagination_render(legos) }}
+    </div>
 
     <a href="{{ path('app_lego_new') }}">Create new</a>
 {% endblock %}
