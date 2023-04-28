@@ -3,26 +3,32 @@
 {% block title %}Lego{% endblock %}
 
 {% block body %}
-    <h1>Lego</h1>
+    <h1>{{ lego.name }}</h1>
 
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ lego.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ lego.name }}</td>
-            </tr>
-            <tr>
                 <th>Ref</th>
                 <td>{{ lego.ref }}</td>
+            </tr>
+            <tr>
+                <th>theme</th>
+                <td>{{ lego.theme.name }}</td>
+            </tr>
+            <tr>
+                <th>Year</th>
+                <td>{{ lego.year }}</td>
+            </tr>
+            <tr>
+                <th>Nombre de pieces</th>
+                <td>{{ lego.numParts }}</td>
             </tr>
         </tbody>
     </table>
 
-    <img src="{{ lego.imageURL }}" />
+    <div class="">
+        <img src="{{ lego.imageURL }}" />
+    </div>
 
     <a href="{{ path('app_lego_index') }}">back to list</a>
 

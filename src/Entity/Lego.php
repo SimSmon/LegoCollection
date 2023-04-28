@@ -28,7 +28,7 @@ class Lego
     private ?int $year = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $num_parts = null;
+    private ?int $numParts = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $imageURL = null;
@@ -108,12 +108,12 @@ class Lego
 
     public function getNumParts(): ?int
     {
-        return $this->num_parts;
+        return $this->numParts;
     }
 
-    public function setNumParts(?int $num_parts): self
+    public function setNumParts(?int $numParts): self
     {
-        $this->num_parts = $num_parts;
+        $this->numParts = $numParts;
 
         return $this;
     }

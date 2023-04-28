@@ -63,6 +63,13 @@ class LegoController extends AbstractController
         ]);
     }
 
+    #[Route('/pocess', name: 'app_lego_pocess', methods: ['POST','GET'])]
+    public function pocess(LegoRepository $legoRepository, PaginatorInterface $paginator, Request $request): Response
+    {
+        return $this->render('lego/pocess.html.twig', [
+        ]);
+    }
+
     #[Route('/new', name: 'app_lego_new', methods: ['GET', 'POST'])]
     public function new(Request $request, LegoRepository $legoRepository): Response
     {
